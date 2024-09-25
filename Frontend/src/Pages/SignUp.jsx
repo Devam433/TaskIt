@@ -1,16 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Input} from '../components/Input'
 import Button from '../components/Button'
 import axios from 'axios'
+import { NavLink } from 'react-router-dom';
+import { Loader2 } from 'lucide-react'
 
 function SignUp() {
   const [loading,setLoading] = useState(false);
   const [error,setError] = useState(null);
+  const [success,setSuccess] = useState(false)
   const nameRef = useRef()
   const emailRef = useRef()
   const passwordRef = useRef()
 
   async function handleSignUp(event) {
+    setSuccess(false)
     setLoading(true)
     event.preventDefault()
     try {
@@ -21,6 +25,8 @@ function SignUp() {
           password:passwordRef.current.value
         }
       )
+      console.log('sign up frontend message',response)
+      setSuccess(true)
       setLoading(false)
       setError(null)
     } catch (error) {
@@ -28,10 +34,19 @@ function SignUp() {
       setLoading(false);
     }
   }
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen flex-col gap-3">
+      {success && (
+        <div className="bg-green-100 border border-green-300 text-green-700 px-5 py-4 rounded relative" role="alert">
+          <strong className="font-bold">Success!</strong>
+          <span className="block sm:inline"> Your account has been created. <NavLink to={'/signin'} className="font-semibold text-blue-600">Sign In Now</NavLink></span>
+        </div>
+      )}
+      {
+      !success && (
       <div className="w-full max-w-md p-8 space-y-6 bg-white  rounded-lg shadow-lg border-t-4">
-        <h2 className="text-3xl font-bold text-center">Sign In</h2>
+        <h2 className="text-3xl font-bold text-center">Sign Up</h2>
         <form className="space-y-4" onSubmit={handleSignUp}>
           <div className="space-y-2">
             <Input id="name" type="text" placeholder="Enter your name" label="Full name" ref={nameRef} labelStyle="" required />
@@ -55,7 +70,23 @@ function SignUp() {
             </Button>
           </p>
         </div>
-      </div>
+      </div>)
+      }
+      {loading && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity duration-300"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center max-w-sm w-full mx-4">
+            <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+            <p className="mt-4 text-lg font-semibold text-gray-700">Signing Up...</p>
+            <p className="mt-2 text-sm text-gray-500 text-center">
+              Please wait while we verify your credentials. This may take a few moments.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

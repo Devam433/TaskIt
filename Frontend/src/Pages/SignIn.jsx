@@ -1,18 +1,19 @@
+
 import { useEffect, useRef } from "react"
 import Button from "../components/Button.jsx"
 import {Input} from "../components/Input"
 import {useDispatch, useSelector} from 'react-redux'
 import { signinThunk } from "../features/authSlice.js"
 import { useNavigate } from "react-router-dom"
+import { Loader2 } from 'lucide-react'
 
 export default function SignIn() {
-
+  const currentUser = useSelector(state=>state.auth)
   const emailRef = useRef()
   const passwordRef = useRef()
-  const currentUser = useSelector(state=>state.auth)
-  console.log(currentUser);
   const dispatch = useDispatch();
   const naviagte = useNavigate();
+
   async function handelSignIn(event) {
     event.preventDefault();
     const email = emailRef.current.value;
@@ -27,6 +28,7 @@ export default function SignIn() {
     }
   },[currentUser,dispatch])
 
+  const isLoading = currentUser?.status === 'loading'
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-md p-8 space-y-6 bg-white  rounded-lg shadow-lg border-t-4">
@@ -52,6 +54,21 @@ export default function SignIn() {
           </p>
         </div>
       </div>
+      {isLoading && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm transition-opacity duration-300"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center max-w-sm w-full mx-4">
+            <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+            <p className="mt-4 text-lg font-semibold text-gray-700">Signing In...</p>
+            <p className="mt-2 text-sm text-gray-500 text-center">
+              Please wait while we verify your credentials. This may take a few moments.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from './Button'
-
+import {useSelector} from 'react-redux'
 function Header() {
+  const userData = useSelector(state=>state.auth);
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
@@ -12,9 +13,13 @@ function Header() {
             <nav className="flex items-center space-x-6 text-sm font-medium">
               <Button href="/about">About</Button>
               <Button href="/features">Features</Button>
+              <Button href="/dashboard">dashboard</Button>
+
             </nav>
           </div>
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          {
+          !userData?.isActive &&
+          (<div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
             <nav className="flex items-center">
               <Button href="/signin">
                 <Button variant="ghost" className="mr-2">
@@ -25,7 +30,8 @@ function Header() {
                 <Button>Sign Up</Button>
               </Button>
             </nav>
-          </div>
+          </div>)
+          }
         </div>
       </header>
   )

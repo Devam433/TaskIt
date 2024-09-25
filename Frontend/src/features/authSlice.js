@@ -30,11 +30,13 @@ const authSlice = createSlice({
     builder
     .addCase(signinThunk.pending,(state)=>{
       state.status='loading'
+      state.error=null
     })
     .addCase(signinThunk.fulfilled,(state,action)=>{
       state.userData=action.payload.user;
       state.status='fulfilled',
       state.isActive=true
+      state.error=null
     })
     .addCase(signinThunk.rejected,(state,action)=>{
       console.log(action.payload.data.meaage)

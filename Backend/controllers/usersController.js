@@ -16,7 +16,7 @@ export async function signUp(req,res,next) {
     const userFound = await UsersModel.findOne({email:email});
     //has scope of improvement against timing attack
     if(userFound) {
-      return res.status(409).json({message:'Email not availableee'}) //conflict
+      return res.status(409).json({message:'Email not available'}) //conflict
     }
   } catch (error) {
     const customError = new Error('Unexpected Error');
@@ -34,6 +34,7 @@ export async function signUp(req,res,next) {
       password:hashedPassword
     })
     if(!user) {
+      console.log(user);//
       const error = new Error('Internal Error, Try again')
       error.statusCode = 500;
       next(error);
@@ -46,14 +47,15 @@ export async function signUp(req,res,next) {
     if(error.name === "ValidationError") {
       const customError = new Error("Invalid type")
       error.details = error;
-      res.status(400)
+      customError.statusCode=400
       next(customError);
     }
     else if(error.code === 11000) //Mongoose uses error code 11000 for duplicate key errors. 
     {
+      console.log(error);
       const customError = new Error("Email already exists");
       customError.details = error;
-      res.status(409)
+      customError.statusCode=409
       next(customError);
     }
   }
@@ -105,6 +107,18 @@ export async function signIn(req,res,next) {
     const customError = new Error('Unexpected Error');
     customError.details = error;
     next(customError);
+  }
+}
+
+export async function checkAvailableEmail(req,res) {
+  const {email} = req.body;
+  try {
+    const response = await UsersModel.findOne({email:email})
+    if(response) {
+      res.status(409).json({message:'Email not available'});
+    }
+  } catch (error) {
+    console.log('check email error',error);
   }
 }
 

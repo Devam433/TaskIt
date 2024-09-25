@@ -8,6 +8,8 @@ import App from './App'
 import './index.css'
 import Home from './Pages/Home'
 import { store } from './store/store'
+import { ProtectedRoute } from './util/ProtectedRoute'
+import Dashboard from './Pages/Dashboard'
   const router = createBrowserRouter([
     {
       path:'/',
@@ -26,6 +28,10 @@ import { store } from './store/store'
           path:'/signup',
           element:<SignUp/>
         },
+        {
+          path:'/dashboard',
+          element:<ProtectedRoute><Dashboard/></ProtectedRoute>
+        }
       ]
     }
   ])

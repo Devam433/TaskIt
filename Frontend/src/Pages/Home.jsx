@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import Button from '../components/Button'
-import axios from 'axios'
+
+import React, { useEffect } from 'react';
+import Button from '../components/Button';
+import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function Home() {
-  // const [userData,setUserData] = useState();
-  const currentUser = useSelector(state=>state.auth.userData);
+  const currentUser = useSelector(state=>state.auth);
   console.log(currentUser);
-  useEffect(()=>{
-    // console.log(localStorage.getItem('token'));
-    if(currentUser) {
-    axios.get('/api/users/me',
-      {
-        headers:{
-          token:localStorage.getItem('token')
-        }
-      }
-    )
-    .then(response=>{
-      console.log(response);
-      // setUserData(response.data)
-    })
-  }
-  },[currentUser])
+  // useEffect(()=>{
+  //   if(!currentUser) {
+  //   axios.get('/api/users/me',
+  //     {
+  //       headers:{
+  //         token:localStorage.getItem('token')
+  //       }
+  //     }
+  //   )
+  //   .then(response=>{
+  //     console.log(response);
+  //   })
+  // }
+  // },[currentUser])
 
   return (
     <main className="flex-1">
@@ -31,18 +29,20 @@ function Home() {
             <div className="flex flex-col items-center space-y-7 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Welcome to Todo App {currentUser?.name}
+                  Welcome to Todo App {currentUser?.userData?.name}
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                   Organize your tasks, boost your productivity, and achieve your goals with TaskIt.
                 </p>
               </div>
               <div className="space-x-4">
+                { !currentUser?.isActive &&
+                (<Button href="/signup">
+                  <Button>Get Started</Button>
+                </Button>)
+                }
                 <Button href="/features">
-                  <Button>Learn More</Button>
-                </Button>
-                <Button href="/signup">
-                  <Button variant="outline">Get Started</Button>
+                  <Button variant="outline">Learn More</Button>
                 </Button>
               </div>
             </div>

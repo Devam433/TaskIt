@@ -1,6 +1,10 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 
 function Hero() {
+
+  const currentUser = useSelector(state=>state.auth)
+  console.log('currentUSER HERRO',currentUser);
   return (
     <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -15,9 +19,12 @@ function Hero() {
                 </p>
               </div>
               <div className="space-x-4">
-                <Button href="/signup">
+                {
+                currentUser?.isActive ?
+                (<Button href="/signup">
                   <Button>Get Started</Button>
-                </Button>
+                </Button>) : ''
+                }
                 <Button href="/features">
                   <Button variant="outline">Learn More</Button>
                 </Button>
