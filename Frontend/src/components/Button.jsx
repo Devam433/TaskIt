@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 
 function Button({className='',onClick,px,children,href,disabled=false,type="button",variant = 'primary',
-  size = 'md',...props}) {
+  size = 'md',childrenStyle='',...props}) {
 
   const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none'
   
@@ -21,14 +21,14 @@ function Button({className='',onClick,px,children,href,disabled=false,type="butt
 
   function renderLink(){
     return (
-    <NavLink className={classes} to={href}><span>{children}</span></NavLink>
+    <NavLink className={classes} to={href}><span className={`${childrenStyle}`}>{children}</span></NavLink>
     )
   }
   
   function renderButton(){
     return (
     <button className={classes} onClick={onClick} disabled={disabled} type={type} {...props}>
-      <span>{children}</span>
+      <span className={`${childrenStyle}`}>{children}</span>
     </button>
     )
   }

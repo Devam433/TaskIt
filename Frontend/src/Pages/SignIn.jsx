@@ -30,7 +30,7 @@ export default function SignIn() {
 
   const isLoading = currentUser?.status === 'loading'
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center mt-[10%]">
       <div className="w-full max-w-md p-8 space-y-6 bg-white  rounded-lg shadow-lg border-t-4">
         <h2 className="text-3xl font-bold text-center">Sign In</h2>
         <form className="space-y-4" onSubmit={handelSignIn}>

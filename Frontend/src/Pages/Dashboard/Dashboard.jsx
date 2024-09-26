@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
+import Button from '../../components/Button';
+
+import Header from '../../components/DashboardComponent/Header';
+import Aside from '../../components/DashboardComponent/Aside';
+import { Outlet } from 'react-router-dom';
+import Breadcrumbs from '../../components/DashboardComponent/Breadcrumbs';
+import AddTaskModal from '../../components/DashboardComponent/AddTaskModal';
+import { useDispatch } from 'react-redux';
+import { addTask, fetchTasks } from '../../features/tasksSlice';
+
+export default function Dashboard() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [taskName, setTaskName] = useState('');
+const dispatch = useDispatch();
+  // Toggle modal open/close state
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Handle form submission (you can expand this based on your logic)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('New task added:', taskName);
+
+    dispatch(addTask({'title':taskName,'isCompleted':false}))
+    // dispatch(fetchTasks())
+    setTaskName(''); // Reset the input field after submission
+    toggleModal(); // Close the modal
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Header */}
+      <Header setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen}/>
+      {/* Sidebar and Main Content */}
+      <div className="flex">
+        <AddTaskModal isOpen={isOpen} handleSubmit={handleSubmit} taskName={taskName} setTaskName={setTaskName} toggleModal={toggleModal} title='Add New Task'/>
+        {/* Sidebar */}
+        <Aside sidebarOpen={sidebarOpen} />
+        {/* Main Content */}
+        <div className='flex-1 p-6'>
+          <Breadcrumbs/>
+          <Outlet />
+        </div>
+      </div>
+      {/* Add New Task Button */}
+      <Button
+        className="fixed bottom-6 right-6 bg-purple-600 text-white rounded-xl p-4 shadow-lg hover:bg-purple-700 transition-all duration-300 ease-in-out overflow-hidden group"
+        aria-label="Add new task"
+        onClick={toggleModal}
+      >
+        <div className="flex items-center">
+          <Plus className="h-6 w-6 transition-all duration-300 ease-in-out group-hover:rotate-90" />
+          <span className="max-w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:max-w-xs group-hover:ml-2">
+            Add Task
+          </span>
+        </div>
+      </Button>
+    </div>
+  );
+}

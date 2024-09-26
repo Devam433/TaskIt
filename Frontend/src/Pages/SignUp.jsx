@@ -36,7 +36,7 @@ function SignUp() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col gap-3">
+    <div className="flex items-center justify-center mt-[10%] flex-col gap-3">
       {success && (
         <div className="bg-green-100 border border-green-300 text-green-700 px-5 py-4 rounded relative" role="alert">
           <strong className="font-bold">Success!</strong>

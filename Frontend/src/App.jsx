@@ -6,7 +6,7 @@ import Layout from './components/Layout'
 function App() {
   const {pathname} = useLocation();
   let hide = false;
-  if(pathname=='/signin' || pathname=='/signup') {
+  if(pathname=='/signin' || pathname=='/signup' || pathname=='/dashboard' || pathname=='/dashboard/all-tasks' || pathname=='/dashboard/completed-tasks' || pathname=='/dashboard/ongoing-tasks') {
     hide=true;
   } else{
     hide=false;
