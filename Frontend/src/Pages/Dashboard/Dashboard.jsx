@@ -14,8 +14,11 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [priority, setPriority] = useState('')
   const [taskName, setTaskName] = useState('');
-const dispatch = useDispatch();
+
+  const [finishBy, setFinishBy] = useState('')
+  const dispatch = useDispatch();
   // Toggle modal open/close state
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -25,12 +28,13 @@ const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('New task added:', taskName);
-
-    dispatch(addTask({'title':taskName,'isCompleted':false}))
+    dispatch(addTask({title:taskName,finishBy:finishBy,priority:priority,isCompleted:false}))
     // dispatch(fetchTasks())
     setTaskName(''); // Reset the input field after submission
     toggleModal(); // Close the modal
   };
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -38,7 +42,7 @@ const dispatch = useDispatch();
       <Header setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen}/>
       {/* Sidebar and Main Content */}
       <div className="flex">
-        <AddTaskModal isOpen={isOpen} handleSubmit={handleSubmit} taskName={taskName} setTaskName={setTaskName} toggleModal={toggleModal} title='Add New Task'/>
+        <AddTaskModal isOpen={isOpen} handleSubmit={handleSubmit} taskName={taskName} setTaskName={setTaskName} toggleModal={toggleModal} priority={priority} finishBy={finishBy} setPriority={setPriority} setFinishBy={setFinishBy} title='Add New Task'/>
         {/* Sidebar */}
         <Aside sidebarOpen={sidebarOpen} />
         {/* Main Content */}

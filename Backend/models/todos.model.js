@@ -9,13 +9,16 @@ const todosSchema = new mongoose.Schema(
     },
     isCompleted:{
       type: Boolean,
+      default:false,
       required: true,
     },
     status:{
-      type:String
+      type:String,
+      default:'Not Started',
     },
     priority:{
-      type:String
+      type:String,
+      required:true
     },
     finishBy:{
       type:Date

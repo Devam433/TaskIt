@@ -31,11 +31,15 @@ const dispatch = useDispatch();
           {/* Recent Tasks Section */}
           <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Recent Tasks</h2>
+            {
+              allTasks?.length==0 || !allTasks ? <h1 className="text-3xl font-bold text-gray-800 mb-6">No task found</h1>
+            :
             <ul className="bg-white rounded-xl shadow-md divide-y divide-gray-200">
               {allTasks?.map((task) => (
                 <Task task={task} hideCheckBox={true}/>
               ))}
             </ul>
+            }
           </div>
         </main>
   )

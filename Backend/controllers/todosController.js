@@ -35,20 +35,24 @@ export async function addTodo(req,res) {
 export async function updateTodo(req,res) {
   // const id = req.params.id;
   const id= req.params.id.replace(':','')
-  console.log('id',id)
+  console.log('id of task',id)
   const {title,isCompleted} = req.body;
   if(typeof title!="string" || typeof isCompleted == "undefined") {
     res.status(400)
     throw new Error('Invalid type')
   }
   // const todo = Todos.findById(id);
-  console.log(req.body);
-  const updatedTodo = await TodosModel.findByIdAndUpdate(id,req.body,{new:true})
-  //{ new: true }: This option ensures that the function returns the updated version of the document. Without { new: true }, Mongoose would return the old version (before the update).
-  res.status(200).json({
-    message:'Todo update success',
-    updatedTodo
-  })
+  console.log('BE update task body',req.body);
+  try {
+      const updatedTodo = await TodosModel.findByIdAndUpdate(id,req.body,{new:true})
+//{ new: true }: This option ensures that the function returns the updated version of the document. Without { new: true }, Mongoose would return the old version (before the update).
+      res.status(200).json({
+        message:'Todo update success',
+        updatedTodo
+      })
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function deleteTodo(req,res) {

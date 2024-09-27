@@ -36,7 +36,12 @@ export const addTask = createAsyncThunk('post/todos',async (payload,rejectWithVa
 const tasksSlice = createSlice({
   name:'tasks',
   initialState:{allTasks:null,status:'idel',error:null},
-  reducers:{},
+  reducers:{
+    updateTasks: (state, action) => {
+      state.allTasks = action.payload;
+    }
+  },
+  
   extraReducers:(builder)=>{
     builder
     .addCase(fetchTasks.fulfilled,(state,action)=>{
