@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Edit2, Calendar, Flag, Trash , TriangleIcon, ChevronDown} from 'lucide-react'
 import EditTaskModal from './EditTaskModal'
 
-const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDeleteTask}) => {
+const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDeleteTask,hideStatusDropDown,hideFinishBy}) => {
   const [isChecked,setIsChecked] = useState(false);
   const [isModalOpen,setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -94,8 +94,8 @@ const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDelete
         <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''} ${hide && `hidden`}`} />
       </button>
 
-      {isOpen &&!hide && (
-        <div className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-40">
+      {isOpen && !hide && (
+        <div className={`origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-40 ${hideStatusDropDown && `hidden`}`}>
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             {['Start Task', 'Stop Task', 'Mark as Done'].map((status) => (
               <button
@@ -111,11 +111,11 @@ const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDelete
         </div>
       )}
         </div>
-        <div className="col-span-2 sm:col-span-2 flex items-center text-sm text-gray-500">
+        <div className={` flex items-center text-sm text-gray-500 ${hideFinishBy ? `` : `col-span-2 sm:col-span-2`}`}>
           <Flag className={`w-4 h-4 mr-1 ${getPriorityColor(task.priority)}`} />
           <span className="hidden sm:inline">{task.priority}</span>
         </div>
-        <div className="col-span-2 sm:col-span-3 flex items-center text-sm text-gray-500">
+        <div className={`col-span-2 sm:col-span-3 flex items-center text-sm text-gray-500 ${hideFinishBy && `hidden`}`}>
           <Calendar className="w-4 h-4 mr-1" />
           <span className="hidden sm:inline">{new Date(task.finishBy).toLocaleDateString()}</span>
         </div>

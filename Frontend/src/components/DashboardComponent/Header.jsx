@@ -35,7 +35,7 @@ function Header({setSidebarOpen,sidebarOpen}) {
                 src="https://via.placeholder.com/32"
                 alt="TaskIt Logo"
               />
-              <span className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">TaskIt</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">TaskIt</span> {/**bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 */}
             </div>
             <div className="flex items-center space-x-4">
               <div className="relative">

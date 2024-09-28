@@ -4,9 +4,20 @@ import { TodosModel } from "../models/todos.model.js";
 export async function getTodos(req,res) {
   const userId = req.userId;
   const objectId = new mongoose.Types.ObjectId(userId); //converts string to ObjectId
-  const AllTodos = await TodosModel.find({createdBy:objectId})
-  res.status(200).json(AllTodos); 
+  try {
+    const {status,limit}  = req.query;
+    console.log('this is status',status)
+    const query = {createdBy: objectId};
+    if(status) { query.status = status } //check if params exists
+    console.log('this is the query', query)
+    const Tasks = await TodosModel.find(query).limit(parseInt(limit) || 10);
+    console.log('queried task',Tasks)
+    res.status(200).json(Tasks); 
+  } catch (error) {
+    console.log(error);
+  }
 } 
+
 
 export async function addTodo(req,res) {
   const {title,isCompleted,...rest} = req.body;
