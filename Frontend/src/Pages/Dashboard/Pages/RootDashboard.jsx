@@ -5,7 +5,7 @@ import Task from '../../../components/DashboardComponent/Task';
 
 function RootDashboard() {
 const allTasks = useSelector(state=>state.tasks.allTasks)
-console.log(allTasks);
+
 const dispatch = useDispatch();
   useEffect(()=>{
       dispatch(fetchTasks())
@@ -36,7 +36,7 @@ const dispatch = useDispatch();
             :
             <ul className="bg-white rounded-xl shadow-md divide-y divide-gray-200">
               {allTasks?.map((task) => (
-                <Task task={task} hideCheckBox={true}/>
+                <Task key={task._id} task={task} hideCheckBox={true} hide={true}/>
               ))}
             </ul>
             }

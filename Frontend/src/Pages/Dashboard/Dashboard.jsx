@@ -27,9 +27,8 @@ export default function Dashboard() {
   // Handle form submission (you can expand this based on your logic)
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('New task added:', taskName);
     dispatch(addTask({title:taskName,finishBy:finishBy,priority:priority,isCompleted:false}))
-    // dispatch(fetchTasks())
+    dispatch(fetchTasks())
     setTaskName(''); // Reset the input field after submission
     toggleModal(); // Close the modal
   };
