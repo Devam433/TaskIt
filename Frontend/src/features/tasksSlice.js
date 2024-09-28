@@ -8,7 +8,6 @@ export const fetchTasks = createAsyncThunk('get/todos',async (payload,rejectWith
         'token': localStorage.getItem('token')
       }
     })  
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error)
@@ -23,9 +22,6 @@ export const addTask = createAsyncThunk('post/todos',async (payload,rejectWithVa
         'token': localStorage.getItem('token')
       }
     })  
-
-    console.log(response);
-    fetchTasks();
     return response.data;
   } catch (error) {
     console.log(error)
@@ -36,16 +32,22 @@ export const addTask = createAsyncThunk('post/todos',async (payload,rejectWithVa
 const tasksSlice = createSlice({
   name:'tasks',
   initialState:{allTasks:null,status:'idel',error:null},
-  reducers:{
-    updateTasks: (state, action) => {
-      state.allTasks = action.payload;
-    }
-  },
-  
+  reducers:{},
   extraReducers:(builder)=>{
     builder
     .addCase(fetchTasks.fulfilled,(state,action)=>{
-      state.allTasks = action.payload;
+      // Clone the array to avoid mutating the original state directly
+      const updatedTasks = [...action.payload];
+      // Sort the tasks: move checked (completed) tasks to the bottom
+      updatedTasks.sort((a, b) => {
+        // If a is not completed and b is completed, a should come before b
+        if (a.status !== 'Completed' && b.status === 'Completed') return -1;
+        // If a is completed and b is not, b should come before a
+        if (a.status === 'Completed' && b.status !== 'Completed') return 1;
+        // If both are the same status, maintain the original order
+        return 0;
+      });
+      state.allTasks = updatedTasks;
       state.error=null;
       state.status='fulfilled'
     })
