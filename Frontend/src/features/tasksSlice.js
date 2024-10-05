@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchTasks = createAsyncThunk('get/todos',async (payload,rejectWithValue)=>{
+
+  console.log('fetch task is getting called')
   try {
     const response = await axios.get('/api/todos',{
       headers:{

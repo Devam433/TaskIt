@@ -68,7 +68,7 @@ const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDelete
     handleDeleteTask(task._id);
   }
   return (
-    <div className={`bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ease-in-out ${isChecked && `bg-gray-200`}`}>
+    <div className={`bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ease-in-out ${isChecked && `bg-slate-300`}`}>
       {
       isModalOpen && <EditTaskModal  toggleModal={toggleModal} task={task} handleEditTaskSubmit={handleEditTaskSubmit}/>
       }<div className="grid grid-cols-12 gap-2 p-4 items-center border-b border-gray-200">
@@ -84,7 +84,7 @@ const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDelete
           </h3>
         </div>
         <div className={`col-span-3 sm:col-span-2 relative`} >
-        <button
+        <button disabled={isChecked}
         onClick={() => setIsOpen(!isOpen)}
         className={`px-2 py-1 flex items-center space-x-1 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${getStatusColor(task.status)}`}
         aria-haspopup="true"
@@ -132,7 +132,7 @@ const Task = ({ task,hide=false, hideCheckBox, handleEditTaskSubmit,handleDelete
             className={`p-2 text-gray-400 hover:text-rose-400 focus:outline-none transition-colors duration-300 ${isChecked ? `block` : `hidden`}`}
             aria-label="Edit task"
           >
-            <Trash className={`w-5 h-5 `}/>
+            <Trash className={`w-5 h-5`}/>
           </button>
         </div>
       </div>

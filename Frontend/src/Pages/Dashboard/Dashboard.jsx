@@ -10,6 +10,9 @@ import AddTaskModal from '../../components/DashboardComponent/AddTaskModal';
 import { useDispatch } from 'react-redux';
 import { addTask, fetchTasks } from '../../features/tasksSlice';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -28,8 +31,18 @@ export default function Dashboard() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addTask({title:taskName,finishBy:finishBy,priority:priority,isCompleted:false}))
-    dispatch(fetchTasks())
+    .then(()=>{
+      console.log('tak created now calling fetchTasks')
+      dispatch(fetchTasks());
+    })
+
+    toast.success('New task created!',{
+      position: 'top-right',
+      autoClose: 2000,
+    })
     setTaskName(''); // Reset the input field after submission
+    setPriority('');
+    setFinishBy('');
     toggleModal(); // Close the modal
   };
 
@@ -37,6 +50,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
+            <ToastContainer/>
       {/* Header */}
       <Header setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen}/>
       {/* Sidebar and Main Content */}
