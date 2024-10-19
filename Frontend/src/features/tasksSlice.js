@@ -3,14 +3,12 @@ import axios from "axios";
 
 export const fetchTasks = createAsyncThunk('get/todos',async (payload,rejectWithValue)=>{
 
-  console.log('fetch task is getting called')
   try {
     const response = await axios.get('/api/todos',{
       headers:{
         'token': localStorage.getItem('token')
       }
     })  
-    console.log('this is fetched tasks', response);
     return response.data;
   } catch (error) {
     console.log(error)
@@ -19,34 +17,28 @@ export const fetchTasks = createAsyncThunk('get/todos',async (payload,rejectWith
 })
 
 export const addTask = createAsyncThunk('post/todos',async (payload,rejectWithValue)=>{
-  console.log('this is addtask thunk')
   try {
     const response = await axios.post('/api/todos',payload,{
       headers:{
         'token': localStorage.getItem('token')
       }
     })  
-    console.log('This is added task',response.data)
   } catch (error) {
     console.log('failed to add task')
-    console.log(error)
     rejectWithValue(error)
   }
 })
 
 export const getCompletedTasks = createAsyncThunk('getCompleted/todos',async (payload,rejectWithValue)=>{
   try {
-    console.log('this is getCompletedTasks')
     const response = await axios.get(`/api/todos`,{
       params:{status:'Completed'},
       headers:{'token' : localStorage.getItem('token')}
     })
     if(response) {
-      console.log('this is fetched CompletedTasks', response);
       return response.data;
     }
   } catch (error) {
-    console.log(error);
     rejectWithValue(error);
   }
 })

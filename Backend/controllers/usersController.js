@@ -34,7 +34,6 @@ export async function signUp(req,res,next) {
       password:hashedPassword
     })
     if(!user) {
-      console.log(user);//
       const error = new Error('Internal Error, Try again')
       error.statusCode = 500;
       next(error);
@@ -52,7 +51,6 @@ export async function signUp(req,res,next) {
     }
     else if(error.code === 11000) //Mongoose uses error code 11000 for duplicate key errors. 
     {
-      console.log(error);
       const customError = new Error("Email already exists");
       customError.details = error;
       customError.statusCode=409
@@ -123,7 +121,6 @@ export async function checkAvailableEmail(req,res) {
 }
 
 export async function getUser(req,res) {
-  console.log('this is getUser req.userId')
   try {
    const currentUser = await UsersModel.findById(req.userId)
     if(!currentUser) {
@@ -140,8 +137,6 @@ export async function getUser(req,res) {
       }
     })
   } catch (error) {
-    console.log('error has beeen thrown')
-    console.log('getuser error',error);
     const customError = new Error('Unexpected Error');
     customError.details = error;
     next(customError);

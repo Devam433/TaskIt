@@ -18,11 +18,11 @@ function CompletedTasks() {
         }
       })
       if(response) {
+        dispatch(getCompletedTasks())
         toast.success('Task Deleted!',{
           position: 'top-right',
           autoClose: 2000,
         })
-        callFetchTasks()
       }
     } catch (error) {
       toast.error('Failed to Delete Task!',{
@@ -34,7 +34,6 @@ function CompletedTasks() {
   }
 
   useEffect(()=>{
-    console.log('useeffect getCompletedTasks')
     dispatch(getCompletedTasks())
   },[dispatch])
 

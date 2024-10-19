@@ -6,12 +6,9 @@ export async function getTodos(req,res) {
   const objectId = new mongoose.Types.ObjectId(userId); //converts string to ObjectId
   try {
     const {status,limit}  = req.query;
-    console.log('this is status',status)
     const query = {createdBy: objectId};
     if(status) { query.status = status } //check if params exists
-    console.log('this is the query', query)
     const Tasks = await TodosModel.find(query).limit(parseInt(limit) || 10);
-    console.log('queried task',Tasks)
     res.status(200).json(Tasks); 
   } catch (error) {
     console.log(error);
@@ -44,7 +41,6 @@ export async function addTodo(req,res) {
 export async function updateTodo(req,res) {
   // const id = req.params.id;
   const id= req.params.id.replace(':','')
-  console.log('id of task',id)
 
   const {title,isCompleted} = req.body;
   if(typeof title!="string" || typeof isCompleted == "undefined") {
@@ -63,7 +59,7 @@ export async function updateTodo(req,res) {
   }
 }
 
-export async function deleteTodo(req,res) {
+export async function deleteTodo(req,res,next) {
   const id = req.params.id.replace(':','');
   if(!mongoose.isValidObjectId(id)) {
     res.status(400)
@@ -71,8 +67,10 @@ export async function deleteTodo(req,res) {
   }
   const deletedTodo = await TodosModel.findByIdAndDelete(id);
   if(!deletedTodo) {
-    res.status(404)
-    throw new Error("Todo not found")
+    const customError = new Error("Todo not found")
+    customError.statusCode = 500
+    next(customError);
+    return;
   }
 
   res.status(200).json({
