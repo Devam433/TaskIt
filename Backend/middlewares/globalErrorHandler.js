@@ -1,25 +1,25 @@
 export function errorHandler(err,req,res,next) {
   const statusCode = err.statusCode === 200 ? 500 : err.statusCode;  
-  res.status(statusCode);
+  res.status(statusCode); // setting the status code for the response
   switch(statusCode){
     case 400: //bad request
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
       break;
     case 401: //unauthorized
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
       break;
     case 403: //forbidden
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
       break;
@@ -27,7 +27,7 @@ export function errorHandler(err,req,res,next) {
     console.log('404 error handler',err)
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
       break;
@@ -35,7 +35,7 @@ export function errorHandler(err,req,res,next) {
     console.log('email error')
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
       break;
@@ -48,7 +48,7 @@ export function errorHandler(err,req,res,next) {
     default:
       res.json({
         message:err.message,
-        error:err.details||null,
+        errorDetails:err.details||null,
         stack:process.env.NODE_ENV === 'production' ? null : err.stack
       })
   }

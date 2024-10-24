@@ -111,7 +111,7 @@ export async function signIn(req,res,next) {
 export async function checkAvailableEmail(req,res) {
   const {email} = req.body;
   try {
-    const response = await UsersModel.findOne({email:email})
+    const response = await UsersModel.findOne({email:email}) //.findOne() resolves the promise and returns null when no match is found.
     if(response) {
       res.status(409).json({message:'Email not available'});
     }

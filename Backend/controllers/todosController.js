@@ -12,40 +12,46 @@ export async function getTodos(req,res) {
     res.status(200).json(Tasks); 
   } catch (error) {
     console.log(error);
+    next(error)
   }
 } 
 
 
-export async function addTodo(req,res) {
+export async function addTodo(req,res,next) {
   const {title,isCompleted,...rest} = req.body;
 
   if(!title || typeof isCompleted=="undefined") {
-    res.status(400);
-    throw new Error("All fields are required");
+    const customError = new Error("All fields are required")
+    customError.statusCode = 400
+    return next(customError);
   }
 
   if(typeof req.body.title!=='string' || typeof req.body.isCompleted!=="boolean") {
-    res.status(400);
-    throw new Error("Invalid type");
+    console.log('body type is invalid')
+    const customError = new Error('Invalid type')
+    customError.statusCode=400;
+    next(customError); // Manually pass error to middleware
+    return;
   }
 
-  const todo = await TodosModel.create({
-    title,isCompleted,createdBy:req.userId,...rest
-  })
-
-  res.status(201).json({
-    message:'Document successfully created',
-    todo
-  })
+  try{
+    const todo = await TodosModel.create({
+      title,isCompleted,createdBy:req.userId,...rest
+    })
+  }catch(error){
+    error.statusCode=500
+    next(error);
+  }
 }
-export async function updateTodo(req,res) {
-  // const id = req.params.id;
+export async function updateTodo(req,res,next) {
   const id= req.params.id.replace(':','')
 
   const {title,isCompleted} = req.body;
   if(typeof title!="string" || typeof isCompleted == "undefined") {
-    res.status(400)
-    throw new Error('Invalid type')
+    const customError = new Error('Invalid type')
+    customError.statusCode = 400
+    next(customError);
+    return;
   }
   try {
       const updatedTodo = await TodosModel.findByIdAndUpdate(id,req.body,{new:true})
@@ -55,26 +61,32 @@ export async function updateTodo(req,res) {
         updatedTodo
       })
   } catch (error) {
-    console.log(error);
+    error.statusCode = error.statusCode || 500
+    next(error);
   }
 }
 
 export async function deleteTodo(req,res,next) {
   const id = req.params.id.replace(':','');
   if(!mongoose.isValidObjectId(id)) {
-    res.status(400)
-    throw new Error("Invalid Id")
+    const customError = new Error('Invalid todo id')
+    customError.statusCode = 400;
+    next(customError)
   }
-  const deletedTodo = await TodosModel.findByIdAndDelete(id);
-  if(!deletedTodo) {
-    const customError = new Error("Todo not found")
-    customError.statusCode = 500
-    next(customError);
-    return;
+  try{
+    const deletedTodo = await TodosModel.findByIdAndDelete(id); //If no document is found with the provided ID, it returns null.
+    if(!deletedTodo) {
+      const customError = new Error("Todo not found")
+      customError.statusCode = 500
+      next(customError);
+      return;
+    }
+    res.status(200).json({
+      message:'Todo Delete success',
+      deletedTodo
+    })
+  }catch(error) {
+    error.statusCode = 500
+    next(error)
   }
-
-  res.status(200).json({
-    message:'Todo Delete success',
-    deletedTodo
-  })
 }

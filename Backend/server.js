@@ -13,8 +13,10 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 
+//Protecting routes globally. It will ensure that all the sub-routes will too get protected.
 app.use('/api/todos',auth);
 app.use('/api/users/me',auth)
+//To keep certain sub-routes public, you can:Apply auth selectively inside route definitions where it's needed.
 
 app.use('/api/todos',todosRoute);
 app.use('/api/users',usersRoute);
