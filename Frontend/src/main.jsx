@@ -15,11 +15,12 @@ import RootDashboard from './Pages/Dashboard/Pages/RootDashboard.jsx'
 import OngoingTasks from './Pages/Dashboard/Pages/OngoingTasks.jsx'
 import CompletedTasks from './Pages/Dashboard/Pages/CompletedTasks.jsx'
 import DueTasks from './Pages/Dashboard/Pages/DueTasks.jsx'
+import ErrorBoundary from './Pages/ErrorPage/ErrorBoundary.jsx'
   const router = createBrowserRouter([
     {
       path:'/',
       element:<App/>,
-      errorElement:null,
+      errorElement:<ErrorBoundary/>,
       children:[
         {
           path:'',
