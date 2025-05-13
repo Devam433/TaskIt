@@ -14,10 +14,10 @@ const PORT = process.env.PORT || 5000
 app.use(express.json())
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '../Frontend/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+  res.sendFile(path.join(__dirname, '../Frontend/build/index.html'));
 });
 
 //Protecting routes globally. It will ensure that all the sub-routes will too get protected.
