@@ -19,10 +19,16 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 
-// Serve static files from the React app
-app.use(express.static(path.join(__filename, '../Frontend/dist')));
+// Serve static files from dist
+app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 
+// Only serve index.html for routes NOT containing a file extension
 app.get('*', (req, res) => {
+  // If the request is for an asset (has a dot), skip fallback
+  if (req.path.includes('.') && !req.path.endsWith('.html')) {
+    return res.sendStatus(404);
+  }
+
   res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
 });
 
