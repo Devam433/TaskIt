@@ -5,7 +5,13 @@ import todosRoute from './routes/todosRoute.js';
 import usersRoute from './routes/usersRoute.js'
 import { auth } from './middlewares/authMiddleware.js';
 import { errorHandler } from './middlewares/globalErrorHandler.js';
-import path from "path"
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 configDotenv();
 
 const app = express();
@@ -14,7 +20,7 @@ const PORT = process.env.PORT || 5000
 app.use(express.json())
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../Frontend/build')));
+app.use(express.static(path.join(__filename, '../Frontend/build')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend/build/index.html'));
