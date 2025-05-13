@@ -29,10 +29,11 @@ export const addTask = createAsyncThunk('post/todos',async (payload,rejectWithVa
   }
 })
 
-export const getCompletedTasks = createAsyncThunk('getCompleted/todos',async (payload,rejectWithValue)=>{
+export const getTasksByStatus = createAsyncThunk('getCompleted/todos',async (payload,rejectWithValue)=>{
+  const status = payload.status;
   try {
     const response = await axios.get(`/api/todos`,{
-      params:{status:'Completed'},
+      params:{status},
       headers:{'token' : localStorage.getItem('token')}
     })
     if(response) {
@@ -45,7 +46,7 @@ export const getCompletedTasks = createAsyncThunk('getCompleted/todos',async (pa
 
 const tasksSlice = createSlice({
   name:'tasks',
-  initialState:{allTasks:null,completedTasks:null,status:'idel',error:null},
+  initialState:{allTasks:null,tasksByStatus:null,status:'idel',error:null},
   reducers:{},
   extraReducers:(builder)=>{
     builder
@@ -73,15 +74,15 @@ const tasksSlice = createSlice({
       state.error=action.error;
       state.status='failed'
     })
-    .addCase(getCompletedTasks.fulfilled,(state,action)=>{
-      state.completedTasks = action.payload;
+    .addCase(getTasksByStatus.fulfilled,(state,action)=>{
+      state.tasksByStatus = action.payload;
       state.status = 'fulfilled'
       state.error = null;
     })
-    .addCase(getCompletedTasks.pending,(state,action) =>{
+    .addCase(getTasksByStatus.pending,(state,action) =>{
       state.status = 'loading'
     })
-    .addCase(getCompletedTasks.rejected,(state,action) =>{
+    .addCase(getTasksByStatus.rejected,(state,action) =>{
       state.status = 'failed',
       state.error = action.error;
     })
